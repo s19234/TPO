@@ -20,7 +20,10 @@ oczywiście, nazwa katalogu i pliku oraz ich położenie są obowiązkowe,
 należy zastosować FileVisitor do przeglądania katalogu oraz kanały plikowe (klasa FileChannel) do odczytu/zapisu plików (bez tego rozwiązanie nie uzyska punktów).
 w wynikach testów mogą być przedstawione dodatkowe zalecenia co do sposobu wykonania zadania (o ile rozwiązanie nie będzie jeszcze ich uwzględniać),.
 
+English version of the problem description.
+
 Task: file channels
+
 Directory {user.home}/TPO1dir contains text files placed in this directory and its subdirectories. Files encoding is Cp1250.
 Recursively looking through the directory tree, starting with {user.home}/TPO1dir, load those files and save theirs text to the file
 named TPO1res.txt, placed in project directory. TPO1res.txt encoding should be UTF-8, and after every project start this file should contain only text read from directory/subdirectories.
