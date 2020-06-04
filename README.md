@@ -19,6 +19,7 @@ trzeba dostarczyć definicji klasy Futil,
 oczywiście, nazwa katalogu i pliku oraz ich położenie są obowiązkowe,
 należy zastosować FileVisitor do przeglądania katalogu oraz kanały plikowe (klasa FileChannel) do odczytu/zapisu plików (bez tego rozwiązanie nie uzyska punktów).
 w wynikach testów mogą być przedstawione dodatkowe zalecenia co do sposobu wykonania zadania (o ile rozwiązanie nie będzie jeszcze ich uwzględniać),.
+Zadanie na PJATK
 
 English version of the problem description.
 
@@ -45,3 +46,4 @@ and of course, directory name and file and their place are mandatory,
 class FileVisitor should be used to search the directory and file channels (class FileChannel) for reading from/ writing to the file(s)
 (without these project won't be tested).
 In tests score might be shown additional requests regarding the way task should be done( unless the project already does what is requested),.
+Solution of a problem from TPO at PJATK.
