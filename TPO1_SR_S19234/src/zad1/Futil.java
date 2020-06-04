@@ -2,63 +2,44 @@ package zad1;
 
 import java.io.*;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.HashSet;
 
 public class Futil {
-    public static void processDir(String dirName, String result){
+    public static void processDir(String dirName, String resultFileName) {
+        Path dir = Paths.get(dirName);
+        File file = new File(resultFileName);
+        Charset in = Charset.forName("Cp1250");
+        Charset out = StandardCharsets.UTF_8;
+        
+        SimpleFileVisitor<Path> simpleFileVisitor = new SimpleFileVisitor<Path>(){
+            @Override
+            public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+                if(file.exists())
+                    file.delete();
+                
+                FileChannel fileIn = FileChannel.open(path);
+                FileChannle fileOut = FileChannel.open(Paths.get(file.getPath));
+                ByteBuffer byteBuffer = ByteBuffer.allocateDirect((int)fileIn.size());
+                
+                fileIn.read(byteBuffer);
+                byteBuffer.flip();
+                CharBuffer charBuffer = in.decode(byteBuffer);
+                
+                byteBuffer = out.encode(charBuffer);
+                fileOut.write(byteBuffer);
+                
+                return FileVisitResult.CONTINUE;
+            }
+        };
         try {
-            Files.walkFileTree(Paths.get(dirName), new HashSet<>(), 2, new FileVisitor<Path>(){
-                @Override
-                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                    return null;
-                }
-
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    // odczytywanie
-                    RandomAccessFile aFile = new RandomAccessFile(file.getFileName().toString(), "rw");
-                    FileChannel inChannel = aFile.getChannel();
-                    ByteBuffer buffer = ByteBuffer.allocate(1024);
-                    int bytesRead = inChannel.read(buffer);
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String input = null;
-                    while(bytesRead != -1){
-                        buffer.flip();
-                        while(buffer.hasRemaining()){
-                            stringBuilder.append((char)buffer.get());
-                        }
-                        buffer.clear();
-                        bytesRead = inChannel.read(buffer);
-                    }
-                    aFile.close();
-
-                    // zapisywanie
-                    input = stringBuilder.toString();
-                    byte[] inputBytes = input.getBytes();
-                    ByteBuffer bufferWrite = ByteBuffer.wrap(inputBytes);
-                    FileOutputStream fos = new FileOutputStream(result);
-                    FileChannel fileChannel = fos.getChannel();
-                    fileChannel.write(bufferWrite);
-                    fileChannel.close();
-                    fos.close();
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-                    return null;
-                }
-
-                @Override
-                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                    return null;
-                }
-            });
-        } catch (IOException ex){
-            System.out.println(ex.getMessage());
+            Files.walkFileTree(dir, simpleFileVisitor);
+        } catch(IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
         }
     }
 }
