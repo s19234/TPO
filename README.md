@@ -31,7 +31,7 @@ Recursively looking through the directory tree, starting with {user.home}/TPO1di
 named TPO1res.txt, placed in project directory. TPO1res.txt encoding should be UTF-8, and after every project start this file should contain only text read from directory/subdirectories.
 
 Following piece of code should do all the work:
-```
+```java
       public class Main {
         public static void main(String[] args) {
           String dirName = System.getProperty("user.home")+"/TPO1dir";
